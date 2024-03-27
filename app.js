@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 // var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
+var eventsRouter = require("./routes/events");
+var ticketsRouter = require("./routes/tickets");
 
 var app = express();
 
@@ -30,6 +32,8 @@ app.use(
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use("/events", eventsRouter);
+app.use("/tickets", ticketsRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)
