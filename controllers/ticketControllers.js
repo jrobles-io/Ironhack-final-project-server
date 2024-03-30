@@ -2,11 +2,11 @@ const Ticket = require("../models/Ticket");
 const Event = require('../models/Event')
 
 const ticketCreate = (req, res, next) => {
-  const { title, description, type, eventId, amount, price } = req.body;
+  const { title, description, tier, eventId, amount, price } = req.body;
   console.log(req.body);
   Ticket.create({
     title,
-    type,
+    tier,
     description,
     event: eventId,
     amount,

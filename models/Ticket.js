@@ -3,7 +3,7 @@ const { model, Schema } = require("mongoose");
 const ticketSchema = new Schema(
   {
     title: {type: String, required: true},
-    type: {type: String, required: true, enum:['General', 'VIP', 'Backstage', 'Complimentary']},
+    tier: {type: String, required: true, enum:['General', 'VIP', 'Backstage', 'Complimentary']},
     description: String,
     event: {type: Schema.Types.ObjectId, ref: 'Event'},
     amount: Number,
