@@ -8,7 +8,8 @@ const eventSchema = new Schema(
     date: {type: Date, required: true},
     owner: {type: Schema.Types.ObjectId, ref: 'User'},
     tickets: [{type: Schema.Types.ObjectId, ref: 'Ticket'}],
-    soldOut: {type: Boolean, default: false}
+    soldOut: {type: Boolean, default: false},
+    image: [{type: String}]
 
   },
   {
