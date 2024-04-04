@@ -26,7 +26,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 router.get("/", isAuthenticated, (req, res, next) => {
-  Cart.findOne({owner: req.user._id})
+  Cart.findOne({owner: req.user._id, checkOut: false})
     .populate({
         path: 'tickets.ticket',
         model: 'Ticket'
@@ -46,7 +46,7 @@ router.put("/update", isAuthenticated, (req, res, next) => {
 
   const { _id, counter } = req.body;
 
-  Cart.findOneAndUpdate({owner: req.user._id}, 
+  Cart.findOneAndUpdate({owner: req.user._id, checkOut: false}, 
     {
       $push: {tickets: {ticket: _id, quantity: counter}}
     }, 
@@ -67,7 +67,7 @@ router.put("/update", isAuthenticated, (req, res, next) => {
 
 router.put("/update/tickets", isAuthenticated, (req, res, next) => {
 
-  Cart.findOneAndUpdate({owner: req.user._id}, 
+  Cart.findOneAndUpdate({owner: req.user._id, checkOut: false}, 
       req.body, 
     { new: true })
     .populate({
@@ -83,5 +83,26 @@ router.put("/update/tickets", isAuthenticated, (req, res, next) => {
       res.json(err);
     });
 });
+
+router.get('/checkout' , isAuthenticated, (req, res, next) => {
+
+  Cart.findOneAndUpdate({owner: req.user._id, checkOut: false}, 
+   {checkOut: true}, 
+    { new: true })
+  .populate({
+      path: 'tickets.ticket',
+      model: 'Ticket'
+  })
+  .then((completedCart) => {
+    console.log("Updated Cart ====>", completedCart);
+    res.json(completedCart);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.json(err);
+  });
+
+
+})
 
 module.exports = router;
