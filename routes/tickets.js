@@ -12,4 +12,14 @@ const  {ticketCreate}  = require('../controllers/ticketControllers')
 
 router.post("/", isAuthenticated, isAdmin, ticketCreate);
 
+router.put("/:ticketId", isAuthenticated), (req, res, next) => {
+    const { _id, quantity } = req.body;
+
+    tickets.findByIDAndUpdate(_id)
+    .then((quantity) => {
+        res.json(tickets.amount - quantity);
+    })
+
+}
+
 module.exports = router;
