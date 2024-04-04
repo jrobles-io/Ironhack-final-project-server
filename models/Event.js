@@ -9,7 +9,7 @@ const eventSchema = new Schema(
     owner: {type: Schema.Types.ObjectId, ref: 'User'},
     tickets: [{type: Schema.Types.ObjectId, ref: 'Ticket'}],
     soldOut: {type: Boolean, default: false},
-    image: [{type: String}]
+    image: String
 
   },
   {

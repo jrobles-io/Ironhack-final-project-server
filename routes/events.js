@@ -10,13 +10,14 @@ const isAdmin = require('../middleware/isAdmin')
  const isOwner = require('../middleware/isOwner')
 
 router.post("/", isAuthenticated, isAdmin, (req, res, next) => {
-  const { title, description, date  } = req.body;
+  const { title, description, date, image  } = req.body;
 
   Event.create({
     title,
     description,
     date,
-    owner: req.user._id
+    owner: req.user._id,
+    image
   })
     .then((createdEvent) => {
       console.log("this is the created Event ===>", createdEvent);

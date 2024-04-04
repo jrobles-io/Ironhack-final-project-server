@@ -9,11 +9,11 @@ const isAuthenticated = require('../middleware/isAuthenticated')
  const isOwner = require('../middleware/isOwner')
 
 router.post("/", isAuthenticated, (req, res, next) => {
-  const { tickets } = req.body;
+  const { _id, counter } = req.body;
 
   Cart.create({
     owner: req.user._id,
-    tickets
+    tickets: [{ticket: _id, quantity: counter}]
   })
     .then((createdCart) => {
       console.log("this is the created Cart ===>", createdCart);
@@ -26,7 +26,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 router.get("/", isAuthenticated, (req, res, next) => {
-  Cart.find({owner: req.user._id})
+  Cart.findOne({owner: req.user._id})
     .populate({
         path: 'tickets.ticket',
         model: 'Ticket'
@@ -44,7 +44,32 @@ router.get("/", isAuthenticated, (req, res, next) => {
 
 router.put("/update", isAuthenticated, (req, res, next) => {
 
-  Cart.findOneAndUpdate({owner: req.user._id}, req.body, { new: true })
+  const { _id, counter } = req.body;
+
+  Cart.findOneAndUpdate({owner: req.user._id}, 
+    {
+      $push: {tickets: {ticket: _id, quantity: counter}}
+    }, 
+    { new: true })
+    .populate({
+        path: 'tickets.ticket',
+        model: 'Ticket'
+    })
+    .then((updatedCart) => {
+      console.log("Updated Cart ====>", updatedCart);
+      res.json(updatedCart);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+});
+
+router.put("/update/tickets", isAuthenticated, (req, res, next) => {
+
+  Cart.findOneAndUpdate({owner: req.user._id}, 
+      req.body, 
+    { new: true })
     .populate({
         path: 'tickets.ticket',
         model: 'Ticket'
