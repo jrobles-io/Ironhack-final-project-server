@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    allowed_formats: ["jpg", "jpeg", "png, svg", "webp"],
+    allowed_formats: ["jpg", "jpeg", "png, svg", "webp", "avif"],
     folder: "final-project" 
   }
 });
